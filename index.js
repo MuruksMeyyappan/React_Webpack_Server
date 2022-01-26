@@ -1,14 +1,19 @@
 require('dotenv').config();
 const express = require('express')
+var cors = require("cors");
+const postRoute = require("./routes/post");
 
 const app = express()
-const cors = require('cors')
+// middleware
+app.use(cors());
+
 const Stripe = require('stripe')
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
-app.use(cors());
 app.use(express.json());
+
+app.use("/api/v1/", postRoute);
 
 app.post('/pay',async (req,res) => {
     try {
